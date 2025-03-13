@@ -217,22 +217,15 @@ class Picker {
           return builder == null ? picker : builder(context, picker);
         });
   }
-    
-  /// get widget
-  Widget getWidget(BuildContext context) {
-    return builder == null ? picker : builder(context, picker);
-  }
 
   /// show dialog picker
   Future<List<int>?> showDialog(BuildContext context,
       {bool barrierDismissible = true,
       Color? backgroundColor,
-      Color? barrierColor,
       PickerWidgetBuilder? builder,
       Key? key}) {
     return Dialog.showDialog<List<int>>(
         context: context,
-        barrierColor: barrierColor,
         barrierDismissible: barrierDismissible,
         builder: (BuildContext context) {
           final actions = <Widget>[];
@@ -486,7 +479,8 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
       child: picker.title == null
           ? SizedBox()
           : DefaultTextStyle(
-              style: theme!.textTheme.titleLarge?.copyWith(
+              style: (theme!.textTheme.titleLarge ?? theme!.textTheme.titleLarge)
+                      ?.copyWith(
                     fontSize: Picker.DefaultTextSize,
                   ) ??
                   TextStyle(fontSize: Picker.DefaultTextSize),
@@ -1290,10 +1284,8 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
       _columnType = columnType[type];
     var month = _columnType.indexWhere((element) => element == 1);
     var day = _columnType.indexWhere((element) => element == 2);
-    if (month != -1 && day != -1) {
-      _needUpdatePrev = day < month ||
-          day < _columnType.indexWhere((element) => element == 0);
-    }
+    _needUpdatePrev =
+        day < month || day < _columnType.indexWhere((element) => element == 0);
     if (!_needUpdatePrev) {
       // check am/pm before hour-ap
       var ap = _columnType.indexWhere((element) => element == 6);
