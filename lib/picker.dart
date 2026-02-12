@@ -207,7 +207,7 @@ class Picker {
       bool useRootNavigator = false,
       Color? backgroundColor,
       PickerWidgetBuilder? builder}) async {
-    return await showModalBottomSheet<T>(
+    return SafeArea(child: await showModalBottomSheet<T>(
         context: context, //state.context,
         isScrollControlled: isScrollControlled,
         useRootNavigator: useRootNavigator,
@@ -215,7 +215,7 @@ class Picker {
         builder: (BuildContext context) {
           final picker = makePicker(themeData, true);
           return builder == null ? picker : builder(context, picker);
-        });
+        }));
   }
 
   /// show dialog picker
